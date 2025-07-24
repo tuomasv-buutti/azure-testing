@@ -11,6 +11,4 @@ az bicep install
 az login
 
 ## Deploy Bicep file:
-az deployment group create --resource-group azure-testing-resource-group --template-file main.bicep
-
-You can add --debug if there's a problem: az deployment group create --resource-group azure-testing-resource-group --template-file main.bicep --debug --name azure-testing-deployment
+az deployment group create --resource-group azure-testing-resource-group --template-file main.bicep --debug --name azure-testing-deployment
