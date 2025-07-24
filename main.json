@@ -1,0 +1,64 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.36.177.2456",
+      "templateHash": "12857709772481281763"
+    }
+  },
+  "parameters": {
+    "staticWebAppName": {
+      "type": "string",
+      "defaultValue": "[format('azure-testing-web-app-{0}', uniqueString(resourceGroup().id))]",
+      "metadata": {
+        "description": "Name of the Static Web App"
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "westeurope",
+      "metadata": {
+        "description": "Azure region"
+      }
+    },
+    "repositoryUrl": {
+      "type": "string",
+      "defaultValue": "https://github.com/tuomasv-buutti/azure-testing",
+      "metadata": {
+        "description": "GitHub repo URL"
+      }
+    },
+    "branch": {
+      "type": "string",
+      "defaultValue": "main",
+      "metadata": {
+        "description": "Git branch"
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Web/staticSites",
+      "apiVersion": "2022-03-01",
+      "name": "[parameters('staticWebAppName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "repositoryUrl": "[parameters('repositoryUrl')]",
+        "branch": "[parameters('branch')]",
+        "buildProperties": {
+          "appLocation": "/",
+          "apiLocation": "",
+          "outputLocation": "/"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "staticWebAppUrl": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Web/staticSites', parameters('staticWebAppName')), '2022-03-01').defaultHostname]"
+    }
+  }
+}
